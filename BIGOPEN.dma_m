@@ -1,0 +1,256 @@
+%COPYRIGHT* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *%0010010048.189.001
+%*                                                                    *%0010020048.189.001
+%T            TITLE:  CLEARPATH HMP MARK 8.0 SYSTEM RELEASE           *%0010030048.189.001
+%*                                                                    *%0010040048.189.001
+%F                    FILE ID: SYMBOL/BIGOPEN                         *%0010050048.189.001
+%*                                                                    *%0010060048.189.001
+%O                    OBJECT ID: OBJECT/BIGOPEN                       *%0010070048.189.001
+%*                                                                    *%0010080048.189.001
+%*                    PROPRIETARY PROGRAM MATERIAL                    *%0010090048.189.001
+%*                                                                    *%0010100048.189.001
+%*      THIS   MATERIAL  IS  PROPRIETARY  TO  IES  (INFORMATICA,      *%0010110048.189.001
+%*      EQUIPAMIENTO Y SOFTWARE WWW.IES.CL) AND  IS  NOT  TO  BE      *%0010120048.189.001
+%*      REPRODUCED, USED OR   DISCLOSED   EXCEPT  IN  ACCORDANCE      *%0010130048.189.001
+%*      WITH  PROGRAM  LICENSE  OR  UPON  WRITTEN AUTHORIZATION.      *%0010140048.189.001
+%*                                                                    *%0010150048.189.001
+%C                   COPYRIGHT (C) 2007 IES LTD.                      *%0010160048.189.001
+%*                                                                    *%0010170048.189.001
+%** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *%0010180048.189.001
+%*                                                                    *%0010190048.189.001
+%*      THE WITHIN INFORMATION IS NOT INTENDED TO BE NOR  SHOULD      *%0010200048.189.001
+%*      SUCH   BE  CONSTRUED  AS   AN   AFFIRMATION   OF   FACT,      *%0010210048.189.001
+%*      REPRESENTATION   OR   WARRANTY   BY   I. E. S.  LTD.  OF      *%0010220048.189.001
+%*      ANY  TYPE,  KIND OR CHARACTER.  ANY PRODUCT AND  RELATED      *%0010230048.189.001
+%*      MATERIALS DISCLOSED HEREIN IS  ONLY  FURNISHED  PURSUANT      *%0010240048.189.001
+%*      AND  SUBJECT  TO  THE  TERMS  AND  CONDITIONS OF A  DULY      *%0010250048.189.001
+%*      EXECUTED LICENSE AGREEMENT.  THE ONLY WARRANTIES MADE BY      *%0010260048.189.001
+%*      IES  WITH  RESPECT  TO  THE  PRODUCTS DESCRIBED  IN THIS      *%0010270048.189.001
+%*      MATERIAL ARE SETFORTH IN THE ABOVE MENTIONED AGREEMENT.       *%0010280048.189.001
+%*                                                                    *%0010290048.189.001
+%*      THE CUSTOMER SHOULD EXERCISE CARE TO ASSURE THAT USE  OF      *%0010300048.189.001
+%*      THE SOFTWARE WILL BE IN FULL COMPLIANCE WITH LAWS, RULES      *%0010310048.189.001
+%*      AND REGULATIONS OF THE  JURISDICTIONS  WITH  RESPECT  TO      *%0010320048.189.001
+%*      WHICH IT IS USED.                                             *%0010330048.189.001
+%*                                                                    *%0010340048.189.001
+%COPYRIGHT* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *%0010350048.189.001
+$$VERSION 52.189.002                                                    0010360052.189.002
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%0010370048.189.001
+% 001 06/03/04 Creacion del utilitario para generacion de OPENDB       %0010380048.189.001
+% 002 15/11/2011 Termina con error cuando detecta errores en struct    %0010385052.189.002
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%0010390048.189.001
+ BEGIN                                                                  0010400048.189.001
+ FILE                                                                   0010420048.189.001
+   FUENTE(KIND=DISK                                                     0010430048.189.001
+         ,FILEKIND=DMALGOLSYMBOL                                        0010440048.189.001
+         ,MYUSE=OUT                                                     0010450048.189.001
+         ,FRAMESIZE=48                                                  0010460048.189.001
+         ,MAXRECSIZE=15                                                 0010470048.189.001
+         ,BLOCKSIZE=420                                                 0010480048.189.001
+         )                                                              0010490048.189.001
+  ,DB    (KIND=DISK                                                     0010530048.189.001
+         ,MYUSE=IN                                                      0010540048.189.001
+         )                                                              0010550048.189.001
+  ;                                                                     0010590048.189.001
+ EBCDIC ARRAY                                                           0010600048.189.001
+   TEMP[0:255]                                                          0010610048.189.001
+  ,LINEA[0:255]                                                         0010620048.189.001
+  ;                                                                     0010630048.189.001
+ INTEGER                                                                0010640048.189.001
+   SEQ                                                                  0010650048.189.001
+  ;                                                                     0010660048.189.001
+ DEFINE                                                                 0010670048.189.001
+   c = , #                                                              0010680048.189.001
+  ,PUT(X) =                                                             0010690048.189.001
+     BEGIN                                                              0010700048.189.001
+     SEQ :=* + 100;                                                     0010710048.189.001
+     REPLACE TEMP BY X,48"03";                                          0010720048.189.001
+     REPLACE LINEA BY " " FOR (15*6);                                   0010730048.189.001
+     REPLACE LINEA BY TEMP FOR 72 UNTIL=48"03";                         0010740048.189.001
+     REPLACE LINEA[72] BY SEQ FOR 8 DIGITS;                             0010750048.189.001
+     WRITE(FUENTE, 15, LINEA);                                          0010760048.189.001
+     END #                                                              0010770048.189.001
+  ;                                                                     0010780048.189.001
+                                                                        0010790048.189.001
+ PROCEDURE OVERLAYERR;                                                  0010800048.189.001
+   BEGIN                                                                0010810048.189.001
+   END;                                                                 0010820048.189.001
+                                                                        0010830048.189.001
+$ INCLUDE PROPERTIES = "DATABASE/PROPERTIES" 20000000-26999999          0010840048.189.001
+$ INCLUDE PROPERTIES = "DATABASE/PROPERTIES" 28000000-29999999          0010850048.189.001
+$ INCLUDE PROPERTIES = "DATABASE/PROPERTIES" 33800000-33999999          0010860048.189.001
+ ARRAY REFERENCE                                                        0010870048.189.001
+   DBDESC[0]                % DBNODE BUFFER                             00108800          
+  ,DESC                                                                 00108900          
+  ,DESC2[0]                                                             00109000          
+  ;                                                                     00109100          
+ EBCDIC ARRAY                                                           0010930048.189.001
+   DBNAME                   % DB NAME                                   00109400          
+  ,NDATASETNAME                                                         00109500          
+  ,PROFILENAME                                                          00109600          
+  ,LPROFILENAME                                                         00109650          
+  ,DATASETNAME[0:17]                                                    00109700          
+  ,PROPANT[0:255]                                                       00109800          
+  ,eDESC [0] = DESC  %For TADS                                          00109820          
+  ,eDESC2[0] = DESC2                                                    00109840          
+  ;                                                                     00109900          
+ INTEGER                                                                0011000048.189.001
+   SN                                                                   0011010048.189.001
+  ,I                                                                    0011020048.189.001
+  ,DBTOP                                                                0011030048.189.001
+  ,ITEMTOP                                                              0011040048.189.001
+  ,KEYTOP                                                               00110500          
+  ,IK                                                                   00110600          
+  ,IT                                                                   0011070048.189.001
+  ,N                                                                    0011080048.189.001
+  ,M                                                                    0011090048.189.001
+  ,TypeAnt                                                              0011100048.189.001
+  ,inx                                                                  0011110048.189.001
+  ;                                                                     0011120048.189.001
+ BOOLEAN                                                                0011130048.189.001
+   FOUNDIT                                                              0011140048.189.001
+  ,SIGNB                                                                0011150048.189.001
+  ,FirstHex                                                             0011160048.189.001
+  ,Primer                                                               0011170048.189.001
+  ;                                                                     0011180048.189.001
+ REAL                                                                   0011190048.189.001
+   DBNODE                                                               0011200048.189.001
+  ,DSSTRUCTURE                                                          0011210048.189.001
+  ,PROFILESTRUCTURE                                                     00112200          
+  ,ITEMNODE                                                             0011230048.189.001
+  ,LKEYNODE                                                             00112400          
+  ,ITEM                                                                 0011250048.189.001
+  ;                                                                     0011260048.189.001
+ DEFINE                                                                 0011270048.189.001
+   B    =    [47:16]#       % BLOCK FIELD OF NODE                       0011280048.189.001
+  ,L    =    [31:16]#       % LIST FIELD OF NODE                        0011290048.189.001
+  ,P    =    [15:16]#       % PROP FIELD OF NODE                        0011300048.189.001
+  ,LISTEND[NODE]            =    DESC[NODE.L]#                          0011310048.189.001
+  ,DBLISTEND[NODE]          =    DBDESC[NODE.L]#                        0011320048.189.001
+  ,DBLISTELEMENT[NODE,INDEX]=    DBDESC[(NODE).L + INDEX]#              0011330048.189.001
+  ,PROP[NODE,FIELD]         =    DESC[(NODE).P + FIELD]#  % DIAL P      0011340048.189.001
+  ,PROP2[NODE,FIELD]        =    DESC2[(NODE).P+ FIELD]#                00113500          
+  ,LISTELEMENT[NODE,INDEX]  =    DESC[(NODE).L + INDEX]#                0011360048.189.001
+  ,LISTELEMENT2[NODE,INDEX] =    DESC2[(NODE).L+ INDEX]#                00113700          
+                                                                        0011380048.189.001
+  ,Alphv                    = 1 #                                       0011390048.189.001
+  ,Hexv                     = 2 #                                       0011400048.189.001
+  ;                                                                     0011410048.189.001
+ POINTER                                                                0011420048.189.001
+   pt                                                                   0011430048.189.001
+  ;                                                                     0011440048.189.001
+ TRANSLATETABLE                                                         0011450048.189.001
+   ToID (EBCDIC TO EBCDIC                                               0011460048.189.001
+        ,"-" TO "_")                                                    0011470048.189.001
+  ;                                                                     0011480048.189.001
+                                                                        0011490048.189.001
+                                                                        0011500048.189.001
+ REPLACE DBNAME[1] BY DB.TITLE;                                         0011620048.189.001
+ SCAN DBNAME[1] FOR N:17 UNTIL = ".";                                   0011630048.189.001
+ REPLACE DBNAME BY (17 - N).[7:48] FOR 1;                               0011640048.189.001
+                                                                        00116500          
+ REPLACE TEMP BY "DESCRIPTION/",DBNAME[1] FOR REAL(DBNAME,1),".";       0011660048.189.001
+ REPLACE DASDL.TITLE BY TEMP;                                           0011670048.189.001
+ DASOPEN;                                                               0011680048.189.001
+ READPROP(0,DESC);                                                      0011690048.189.001
+ DBNODE:=DESC[DBNODELOC];                                               0011700048.189.001
+ LOCKPROP(DBNODE.B,DBDESC);                                             0011710048.189.001
+%DEBUGIT("DBDESC >"c DBDESC[0] FOR SIZE(DBDesc));                       0011720048.189.001
+ DBTOP := DBLISTEND[DBNODE];                                            0011730048.189.001
+                                                                        00117400          
+ REPLACE TEMP                                                           00117500          
+      BY "SYMBOL/BIGOPEN/",DBNAME[1] FOR REAL(DBNAME,1),".";            00117600          
+ REPLACE FUENTE.TITLE BY TEMP;                                          00117700          
+ Put (" BEGIN");                                                        00117800          
+ Put (" DATABASE");                                                     00117900          
+ Put ("   "c DBNAME[1] FOR REAL(DBNAME,1));                             00118000          
+ Put ("  ;");                                                           00118100          
+ Put (" BOOLEAN");                                                      00118200          
+ Put ("   rslt");                                                       00118300          
+ Put ("  ,terminado");                                                  00118320          
+ Put ("  ,Listo");                                                      00118340          
+ put ("  ,withError");                                                  0011835052.189.002
+ Put ("  ;");                                                           00118360          
+ Put (" TASK");                                                         00118380          
+ Put ("   T");                                                          00118400          
+ Put ("  ;");                                                           00118420          
+ Put (" INTEGER");                                                      00118440          
+ Put ("   MyMix");                                                      00118460          
+ Put ("  ;");                                                           00118480          
+ Put (" ");                                                             00118500          
+ Put (" PROCEDURE BUSCAWAIT;");                                         00118502          
+ Put ("   BEGIN");                                                      00118504          
+ Put ("   ARRAY");                                                      00118506          
+ Put ("     SYSMSG[0:255]");                                            00118508          
+ Put ("    ,RESPON[0:120]");                                            00118510          
+ Put ("    ;");                                                         00118512          
+ Put ("   POINTER");                                                    00118514          
+ Put ("     PIN");                                                      00118516          
+ Put ("    ,p");                                                        00118518          
+ Put ("    ;");                                                         00118520          
+ Put ("   LABEL");                                                      00118522          
+ Put ("     Exit");                                                     00118524          
+ Put ("    ;");                                                         00118526          
+ Put (" ");                                                             00118528          
+ Put ("   WHILE TRUE DO");                                              00118530          
+ Put ("     BEGIN");                                                    00118532          
+ Put ("     IF Terminado THEN GO EXIT;");                               00118534          
+ Put ("     WAIT((1));");                                               00118536          
+ Put ("     IF Terminado THEN GO EXIT;");                               00118538          
+ Put ("     REPLACE PIN:=POINTER(SYSMSG)BY MyMix FOR*DIGITS,"           00118540          
+            ""Y"""48"""00""";");                                        00118542          
+ Put ("     DCKEYIN(PIN, RESPON);");                                    00118544          
+ Put ("     P := RESPON;");                                             00118546          
+ Put ("     LISTO := FALSE;");                                          00118548          
+ Put ("     WHILE NOT Listo AND REMAININGCHARS(P) > 0 DO");             00118550          
+ Put ("       BEGIN");                                                  00118552          
+ Put ("       SCAN P:P FOR REMAININGCHARS(P) UNTIL = """O""";");        00118554          
+ Put ("       IF REMAININGCHARS(P) > 0 THEN");                          00118556          
+ Put ("         IF (P = """OVERRIDE""") THEN");                         00118558          
+ Put ("           BEGIN");                                              00118560          
+ Put ("           DISPLAY("""OVERRIDE""");");                           00118562          
+ Put ("           REPLACE PIN:=POINTER(SYSMSG)");                       00118564          
+ Put ("                BY MyMix FOR*DIGITS,"                            00118566          
+              ""AX:OVERRIDE"""48"""00""";");                            00118568          
+ Put ("           DCKEYIN(PIN, RESPON);");                              00118570          
+ Put ("           Listo := TRUE;");                                     00118572          
+ Put ("           END");                                                00118574          
+ Put ("         ELSE");                                                 00118576          
+ Put ("           P:=*+1;");                                            00118578          
+ Put ("       END;");                                                   00118580          
+ Put ("     END;");                                                     00118582          
+ Put (" Exit:");                                                        00118584          
+ Put ("   END OF BUSCAWAIT;");                                          00118586          
+ Put (" ");                                                             00118588          
+ Put (" MyMix := MYSELF.MIXNUMBER;");                                   00118700          
+ Put (" PROCESS BUSCAWAIT [T];");                                       00118800          
+ Put (" OPEN INQUIRY "c DBNAME[1] FOR REAL(DBNAME,1)c";");              00118900          
+ SN := 0;                                                               0011900048.189.001
+ WHILE SN := * + 1 <= DBTOP AND NOT FOUNDIT DO                          0011920048.189.001
+   BEGIN                                                                0011930048.189.001
+   DSSTRUCTURE := DBLISTELEMENT[DBNODE,SN];                             0011940048.189.001
+   READPROP(DSSTRUCTURE.B, DESC);                                       0011950048.189.001
+   I := PROP[DSSTRUCTURE,TYPEF];                                        0011960048.189.001
+   IF (I=DATASET OR I=REMAP) THEN                                       00119700          
+     BEGIN                                                              00119750          
+     Put (" FIND FIRST "c POINTER(PROP[DSSTRUCTURE,WORDONE])+1          00119800          
+          FOR REAL(POINTER(PROP[DSSTRUCTURE,WORDONE]),1)c":rslt;");     00119850          
+     put (" IF rslt THEN");                                             0011985552.189.002
+     put ("   IF REAL(rslt).DMERROR ^= NOTFOUND THEN");                 0011986052.189.002
+     put ("     BEGIN");                                                0011986552.189.002
+     put ("     withError := TRUE;");                                   0011987052.189.002
+     put ("     DISPLAY(" ""DATA ERROR >"c                              0011987552.189.002
+          POINTER(PROP[DSSTRUCTURE,WORDONE])+1                          0011988052.189.002
+          FOR REAL(POINTER(PROP[DSSTRUCTURE,WORDONE]),1)c"<" "");");    0011988552.189.002
+     put ("     END;");                                                 0011989052.189.002
+     END;                                                               00119900          
+   END;                                                                 0012010048.189.001
+ Put (" terminado := TRUE;");                                           00120500          
+ Put (" WHILE(T.STATUS > 0) DO WAIT((1));");                            00121000          
+ put (" IF withError THEN");                                            0012110052.189.002
+ put ("   BEGIN");                                                      0012120052.189.002
+ put ("   DISPLAY(" ""VEA LOS ERRORES" "");");                          0012130052.189.002
+ put ("   MYSELF.STATUS := VALUE(TERMINATED);");                        0012140052.189.002
+ put ("   END;");                                                       0012150052.189.002
+ Put (" END.");                                                         00122000          
+ LOCK(FUENTE);                                                          0016130048.189.001
+ END.                                                                   0016140048.189.001
